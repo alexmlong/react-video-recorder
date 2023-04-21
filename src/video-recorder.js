@@ -83,6 +83,8 @@ export default class VideoRecorder extends Component {
     isOnInitially: PropTypes.bool,
     /** Whether or not to display the video flipped (makes sense for user facing camera) */
     isFlipped: PropTypes.bool,
+    /** Use this to pass props to the MediaRecorder object */
+    mediaRecorderOptions: PropTypes.object,
     /** Pass this if you want to force a specific mime-type for the video */
     mimeType: PropTypes.string,
     /** How much time to wait until it starts recording (in ms) */
@@ -146,7 +148,8 @@ export default class VideoRecorder extends Component {
     countdownTime: 3000,
     constraints: CONSTRAINTS,
     chunkSize: 250,
-    dataAvailableTimeout: 500
+    dataAvailableTimeout: 500,
+    mediaRecorderOptions: {},
   }
 
   videoInput = React.createRef()
@@ -522,7 +525,8 @@ export default class VideoRecorder extends Component {
 
       this.recordedBlobs = []
       const options = {
-        mimeType: this.getMimeType()
+        mimeType: this.getMimeType(),
+        ...this.props.mediaRecorderOptions,
       }
 
       try {
